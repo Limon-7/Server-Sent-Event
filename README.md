@@ -1,2 +1,1 @@
-# Real-Time
-SSE | SignalR | WebSocket | gRPC
+### Server Sent Event
