@@ -28,6 +28,21 @@ namespace ServerSentEvent
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ServerSentEvent", Version = "v1" });
             });
+            
+            services.AddCors(opt =>
+            {
+                opt.AddPolicy("CorsPolicy",
+                    policy =>
+                    {
+                        policy
+                            .AllowAnyHeader()
+                            .AllowAnyMethod()
+                            .WithOrigins("http://dev.limon.com", "http://localhost:4200", "https://sandbox.sslcommerz.com",
+                                "https://securepay.sslcommerz.com")
+                            .AllowCredentials();
+                    });
+                opt.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +55,10 @@ namespace ServerSentEvent
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ServerSentEvent v1"));
             }
 
+            app.UseCors("AllowOrigin");
+            // app.UseCors("CorsPolicy");
+            
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();

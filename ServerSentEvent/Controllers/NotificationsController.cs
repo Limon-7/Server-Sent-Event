@@ -27,16 +27,16 @@ namespace ServerSentEvent.Controllers
             return Ok(new { status= "Connected" });
         }
 
-        [Route("/sse/message")]
-        public async Task<string> SendMessage([FromBody] ServerSentEventMessage message)
+        [HttpPost("message")]
+        public async Task<IActionResult> SendMessage([FromBody] ServerSentEventMessage message)
         {
             if (string.IsNullOrEmpty(message?.Id) ||
                 string.IsNullOrEmpty(message?.Message))
             {
-                return "No messages";
+                return Ok("No messages");
             }
-            await this.service.SendMessageAsync(message);
-            return "";
+            await service.SendMessageAsync(message);
+            return Ok();
         }
     }
 }
